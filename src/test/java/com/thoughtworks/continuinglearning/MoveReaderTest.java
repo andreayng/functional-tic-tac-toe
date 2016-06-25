@@ -20,37 +20,39 @@ public class MoveReaderTest {
     private BufferedReader bufferedReader;
     private MoveReader moveReader;
     private PrintStream printStream;
-    private List<String> defaultBoard;
+    private List<String> cells;
+    private List<String> defaultCells;
 
     @Before
     public void setUp() {
         bufferedReader = mock(BufferedReader.class);
         printStream = mock(PrintStream.class);
         moveReader = new MoveReader(printStream, bufferedReader);
-        defaultBoard = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+        cells = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+        defaultCells = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
     }
 
     @Test
     public void shouldReturnMoveIfOpen() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1");
 
-        assertThat(moveReader.getOpenLocation(new Board(defaultBoard, System.out)), is(1));
+        assertThat(moveReader.getOpenLocation(new Board(cells, defaultCells, System.out)), is(1));
     }
 
     @Test
     public void shouldReturnOpenLocation() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("2");
-        defaultBoard.set(0, "X");
+        cells.set(0, "X");
 
-        assertThat(moveReader.getOpenLocation(new Board(defaultBoard, System.out)), is(2));
+        assertThat(moveReader.getOpenLocation(new Board(cells, defaultCells, System.out)), is(2));
     }
 
     @Test
     public void shouldPrintLocationTakenMessageWhenLocationTaken() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("2");
-        defaultBoard.set(0, "X");
+        cells.set(0, "X");
 
-        moveReader.getOpenLocation(new Board(defaultBoard, System.out));
+        moveReader.getOpenLocation(new Board(cells, defaultCells, System.out));
 
         verify(printStream).println(contains("Location already taken"));
     }

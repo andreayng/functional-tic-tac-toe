@@ -4,8 +4,6 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import static java.lang.String.format;
 
@@ -15,7 +13,7 @@ public class Board {
     private final PrintStream printStream;
     private List<String> cells;
 
-    public Board(List<String> cells, PrintStream printStream) {
+    public Board(List<String> cells, List<String> defaultCells, PrintStream printStream) {
         this.printStream = printStream;
         this.cells = cells;
     }
@@ -43,16 +41,4 @@ public class Board {
                 .findFirst();
     }
 
-    public Optional<String> getFirstOpenLocation() {
-        return cells.stream()
-                .filter(currentMark -> defaultBoard.contains(currentMark))
-                .findFirst();
-    }
-
-    public void ifNotFullThen(Consumer<String> consumer) {
-        cells.stream()
-                .filter(currentMark -> defaultBoard.contains(currentMark))
-                .findFirst()
-        .ifPresent(consumer);
-    }
 }

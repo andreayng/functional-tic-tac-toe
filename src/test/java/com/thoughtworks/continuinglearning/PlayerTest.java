@@ -3,7 +3,6 @@ package com.thoughtworks.continuinglearning;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -21,6 +20,7 @@ public class PlayerTest {
     private String playerNumber;
     private String mark;
     private MoveReader moveReader;
+    private Player nextPlayer;
 
     @Before
     public void setUp() throws IOException {
@@ -31,33 +31,41 @@ public class PlayerTest {
         playerNumber = "1";
         mark = "X";
         player = new Player(playerNumber, mark, board, printStream, moveReader);
+        nextPlayer = mock(Player.class);
     }
 
     @Test
     public void shouldPromptUserWhenMakingMove() {
-        player.move();
+        player.move(nextPlayer);
 
         verify(printStream).println(contains("Player 1"));
     }
 
     @Test
     public void shouldReadInputWhenMakingMove() throws IOException {
-        player.move();
+        player.move(nextPlayer);
 
         verify(moveReader).getOpenLocation(board);
     }
 
     @Test
     public void shouldMarkBoardWhenMakingMove() {
-        player.move();
+        player.move(nextPlayer);
 
         verify(board).markLocation(1, mark);
     }
 
     @Test
     public void shouldRedrawBoardWhenMakingMove() {
-        player.move();
+        player.move(nextPlayer);
 
         verify(board).draw();
+    }
+
+    @Test
+    public void shouldHaveNextPlayerMoveWhenMoveIsOver() {
+        player.move(nextPlayer);
+
+        verify(board).ifNotFullThen((aString) -> nextPlayer.move(player));
     }
 }

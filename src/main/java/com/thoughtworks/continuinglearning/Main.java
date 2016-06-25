@@ -11,7 +11,7 @@ public class Main {
         Player playerOne = new Player("1", "X", board, System.out, moveReader);
         Player playerTwo = new Player("2", "O", board, System.out, moveReader);
 
-        board.draw();
-        playerOne.move(playerTwo);
+        Game game = new Game(board, playerOne, playerTwo);
+        game.start();
     }
 }

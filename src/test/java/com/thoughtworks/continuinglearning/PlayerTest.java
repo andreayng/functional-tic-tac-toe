@@ -20,7 +20,7 @@ public class PlayerTest {
     private String playerNumber;
     private String mark;
     private MoveReader moveReader;
-    private Player nextPlayer;
+    private Player playerTwo;
 
     @Before
     public void setUp() throws IOException {
@@ -31,41 +31,34 @@ public class PlayerTest {
         playerNumber = "1";
         mark = "X";
         player = new Player(playerNumber, mark, board, printStream, moveReader);
-        nextPlayer = mock(Player.class);
+        playerTwo = mock(Player.class);
     }
 
     @Test
     public void shouldPromptUserWhenMakingMove() {
-        player.move(nextPlayer);
+        player.move();
 
         verify(printStream).println(contains("Player 1"));
     }
 
     @Test
     public void shouldReadInputWhenMakingMove() throws IOException {
-        player.move(nextPlayer);
+        player.move();
 
         verify(moveReader).getOpenLocation(board);
     }
 
     @Test
     public void shouldMarkBoardWhenMakingMove() {
-        player.move(nextPlayer);
+        player.move();
 
         verify(board).markLocation(1, mark);
     }
 
     @Test
     public void shouldRedrawBoardWhenMakingMove() {
-        player.move(nextPlayer);
+        player.move();
 
         verify(board).draw();
-    }
-
-    @Test
-    public void shouldHaveNextPlayerMoveWhenMoveIsOver() {
-        player.move(nextPlayer);
-
-        verify(board).ifNotFullThen((aString) -> nextPlayer.move(player));
     }
 }

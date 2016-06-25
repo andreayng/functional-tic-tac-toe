@@ -1,8 +1,6 @@
 package com.thoughtworks.continuinglearning;
 
 import java.io.PrintStream;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class Player {
 
@@ -20,12 +18,11 @@ public class Player {
         this.moveReader = moveReader;
     }
 
-    public void move(Player nextPlayer) {
+    public void move() {
         printStream.println("Player " + playerNumber + ", make your move:");
         int validMove = moveReader.getOpenLocation(board);
         board.markLocation(validMove, mark);
         board.draw();
-        board.ifNotFullThen((aString) -> nextPlayer.move(this));
     }
 
 }
